@@ -1,0 +1,315 @@
+1) LIST ALL THE EMPLOYEES WHOSE COMMISSION IS NULL
+
+select name from interns where commission is null;
++---------+
+| name    |
++---------+
+| Ram     |
+| Tamizh  |
+| Rasheed |
++---------+
+
+2) LIST ALL THE EMPLOYEES WHO DON’T HAVE A REPORTING MANAGER
+
+select name from interns where Reporting_Manager is null;
++--------+
+| name   |
++--------+
+| Tamizh |
++--------+
+
+3) LIST ALL THE SALESMEN IN DEPT 30
+
+select name from interns where role = 'Sales' and deptId = 30;
++-------+
+| name  |
++-------+
+| Kumar |
+| Prem  |
++-------+
+
+4) LIST ALL THE SALESMEN IN DEPT NUMBER 30 AND HAVING SALARY GREATER THAN 1500
+
+select name,salary from interns where role = 'Sales' and deptId = 30 and salary > 1500;
++-------+---------+
+| name  | salary  |
++-------+---------+
+| Kumar | 25000.5 |
+| Prem  | 25000.5 |
++-------+---------+
+
+5) LIST ALL THE EMPLOYEES WHOSE NAME STARTS WITH ‘S’ OR ‘A’
+
+select name from interns where name like 's%' or name like 'a%';
++---------+
+| name    |
++---------+
+| Avinash |
++---------+
+
+6) LIST ALL THE EMPLOYEES EXCEPT THOSE WHO ARE WORKING IN DEPT 100 & 200.
+
+select name from interns where deptId not in (100,200);
++---------+
+| name    |
++---------+
+| Nandha  |
+| Tamizh  |
+| Bala    |
+| Rasheed |
+| Kumar   |
+| Prem    |
++---------+
+
+7) LIST THE EMPLOYEES WHOSE NAME DOES NOT START WITH ‘S’
+
+select name from interns where name not like 's%';
++-----------------+
+| name            |
++-----------------+
+| Muthu           |
+| Ram             |
+| Avinash         |
+| Naveen S        |
+| Lokesh          |
+| Kishore Kumar R |
+| Nandha          |
+| Tamizh          |
+| Bala            |
+| Rasheed         |
+| Kumar           |
+| Prem            |
++-----------------+
+
+8) LIST ALL THE EMPLOYEES WHO ARE HAVING REPORTING MANAGERS IN DEPT 100
+
+select name from interns where Reporting_Manager is not null and deptId =100;
++---------+
+| name    |
++---------+
+| Muthu   |
+| Avinash |
+| Lokesh  |
++---------+
+
+9) LIST ALL THE EMPLOYEES WHOSE COMMISSION IS NULL AND WORKING AS CLERK
+
+select name from interns where commission is null and role = 'Clerk';
++--------+
+| name   |
++--------+
+| Roshan |
++--------+
+
+10) LIST ALL THE EMPLOYEES WHO DON’T HAVE A REPORTING MANAGER IN DEPTNO 100 OR 300
+
+select name from interns where Reporting_Manager is null and deptId in(100,300);
++--------+
+| name   |
++--------+
+| Tamizh |
++--------+
+
+11) LIST ALL THE SALESMEN IN DEPT 30 WITH SAL MORE THAN 2450
+
+select name,role from interns where role = 'Sales' and deptId = 30 and salary > 2450;
++-------+-------+
+| name  | role  |
++-------+-------+
+| Kumar | Sales |
+| Prem  | Sales |
++-------+-------+
+
+12) LIST ALL THE ANALYST IN DEPT NUMBER 200 AND HAVING SALARY GREATER THAN 2500
+
+select name,role from interns where role = 'Analyst' and deptId = 200 and salary > 2500;
++-------+---------+
+| name  | role    |
++-------+---------+
+| Raghu | Analyst |
++-------+---------+
+
+13) LIST ALL THE EMPLOYEES WHOSE NAME STARTS WITH ‘M’ OR ‘J’
+
+select name from interns where name like 'm%' or name like 'j%';
++-------+
+| name  |
++-------+
+| Muthu |
++-------+
+
+14) LIST ALL THE EMPLOYEES WITH ANNUAL SALARY EXCEPT THOSE WHO ARE WORKING IN DEPT 300
+
+select name,salary*12 as "Annual Salary" from interns where deptId != 300;
++-----------------+---------------+
+| name            | Annual Salary |
++-----------------+---------------+
+| Muthu           |        300006 |
+| Ram             |        924006 |
+| Avinash         |        444006 |
+| Naveen S        |        444006 |
+| Lokesh          |        276006 |
+| Kishore Kumar R |        300006 |
+| Bala            |        480006 |
+| Rasheed         |        360006 |
+| Kumar           |        300006 |
+| Prem            |        300006 |
+| Roshan          |        300006 |
+| Raghu           |        360006 |
++-----------------+---------------+
+
+15) LIST THE EMPLOYEES WHOSE NAME DOES NOT END WITH ‘ES’ OR ‘R’
+
+select name from interns where name not like '%es' and name not like '%r';
++----------+
+| name     |
++----------+
+| Muthu    |
+| Ram      |
+| Avinash  |
+| Naveen S |
+| Lokesh   |
+| Nandha   |
+| Tamizh   |
+| Bala     |
+| Rasheed  |
+| Prem     |
+| Roshan   |
+| Raghu    |
++----------+
+
+16) LIST ALL THE EMPLOYEES WHO ARE HAVING REPORTING MANAGERS IN DEPT 100 ALONG WITH 10% HIKE IN SALARY
+
+select name,salary,salary+(salary*10/100) as "10%Hike" from interns where deptId = 100;
++---------+---------+----------+
+| name    | salary  | 10%Hike  |
++---------+---------+----------+
+| Muthu   | 25000.5 | 27500.55 |
+| Avinash | 37000.5 | 40700.55 |
+| Lokesh  | 23000.5 | 25300.55 |
++---------+---------+----------+
+
+17) DISPLAY ALL THE EMPLOYEE WHO ARE ‘SALESMAN’S HAVING ‘E’ AS THE LAST BUT ONE CHARACTER IN ENAME BUT SALARY HAVING EXACTLY 4 CHARACTER
+
+select name,role from interns where name like '%e_' and salary like '____';
+
+18) DISPLAY ALL THE EMPLOYEE WHO ARE JOINED AFTER YEAR 81
+
+select name,Date_of_Join from interns where Date_of_Join > '1981-12-31';
++-----------------+--------------+
+| name            | Date_of_Join |
++-----------------+--------------+
+| Ram             | 1985-02-14   |
+| Naveen S        | 1985-02-14   |
+| Kishore Kumar R | 1985-02-14   |
+| Rasheed         | 1985-02-14   |
+| Raghu           | 1985-02-14   |
++-----------------+--------------+
+
+19) DISPLAY ALL THE EMPLOYEE WHO ARE JOINED IN FEB
+
+select name,Date_of_Join from interns where Date_of_Join like '%02%';
++-----------------+--------------+
+| name            | Date_of_Join |
++-----------------+--------------+
+| Muthu           | 1980-02-14   |
+| Ram             | 1985-02-14   |
+| Avinash         | 1975-02-14   |
+| Naveen S        | 1985-02-14   |
+| Lokesh          | 1980-02-14   |
+| Kishore Kumar R | 1985-02-14   |
+| Nandha          | 1975-02-14   |
+| Tamizh          | 1980-02-14   |
+| Bala            | 1975-02-14   |
+| Rasheed         | 1985-02-14   |
+| Kumar           | 1980-02-14   |
+| Prem            | 1975-02-14   |
+| Roshan          | 1975-02-14   |
+| Raghu           | 1985-02-14   |
++-----------------+--------------+
+
+20) LIST THE EMPLOYEES WHO ARE NOT WORKING AS MANAGERS AND CLERKS IN DEPT 100 AND 200 WITH A SALARY IN THE RANGE OF 1000 TO 3000
+
+select name from interns where role not in ('Manager','Clerk') and deptId in (100,200) and salary between 1000 and 3000;
+
+21) LIST THE EMPLOYEES WHOSE SALARY NOT IN THE RANGE OF 1000 TO 2000 AND WORKING IN DEPT 100,200 OR 300 EXCEPT ALL SALESMEN
+
+select name,salary,deptId,role from interns where salary not between (1000 and 2000) and deptId in (100,200,300) and role != 'Sales';
++-----------------+---------+--------+-----------+
+| name            | salary  | deptId | role      |
++-----------------+---------+--------+-----------+
+| Muthu           | 25000.5 |    100 | Developer |
+| Ram             | 77000.5 |    200 | Architect |
+| Avinash         | 37000.5 |    100 | Developer |
+| Naveen S        | 37000.5 |    200 | Developer |
+| Lokesh          | 23000.5 |    100 | Testing   |
+| Kishore Kumar R | 25000.5 |    200 | Developer |
+| Nandha          | 25000.5 |    300 | Testing   |
+| Tamizh          | 30000.5 |    300 | DBA       |
+| Bala            | 40000.5 |    400 | Testing   |
+| Rasheed         | 30000.5 |    400 | Architect |
+| Roshan          | 25000.5 |    400 | Clerk     |
+| Raghu           | 30000.5 |    200 | Analyst   |
++-----------------+---------+--------+-----------+
+
+22) LIST THE DEPARTMENT NAMES WHICH ARE HAVING LETTER ‘O’ IN THEIR LOCATIONS AS WELL AS THEIR DEPARTMENT NAMES
+
+select dname,location from department where location like '%o%' or dname like '%o%';
++------------+-----------+
+| dname      | location  |
++------------+-----------+
+| Developers | Chennai   |
+| Testers    | Bangalore |
++------------+-----------+
+
+23) DISPLAY ALL THE EMPLOYEES WHOSE JOB HAS STRING ‘MAN’ IN IT.
+
+select name,role from interns where role like '%Man%';
++-------+----------+
+| name  | role     |
++-------+----------+
+| Kumar | SalesMan |
+| Prem  | SalesMan |
++-------+----------+
+
+24)LIST THE EMPLOYEES WHO ARE HIRED AFTER 82 AND BEFORE 87.
+
+select name,Date_of_Join from interns where Date_of_Join > '1982-12-31' and Date_of_Join < '1987-01-01';
++-----------------+--------------+
+| name            | Date_of_Join |
++-----------------+--------------+
+| Ram             | 1985-02-14   |
+| Naveen S        | 1985-02-14   |
+| Kishore Kumar R | 1985-02-14   |
+| Rasheed         | 1985-02-14   |
+| Raghu           | 1985-02-14   |
++-----------------+--------------+
+
+25)WAQTD ALL THE DETAILS OF EMPLOYEES HIRED IN NOVEMBER AND DECEMBER.
+
+select * from interns where Date_of_join like '%____-11-__%' and Date_of_Join like '____-%12-__%';
+
+26)LIST ALL THE EMPLOYEE NAMES AND COMISSION FOR THOSE EMPLOYEES WHO EARN COMISSION MORE THAN THEIR SALARY
+
+select name,commission from interns where commission > salary;
+
+27)WAQTD NAME AND DESIGNATION FOR ALL THE EMPLOYEES HAVING REPORTING MANAGERS AND ALSO THRIE NAMES STARTING WITH ‘S’
+
+select name,role from interns where Reporting_Manager is not null and Reporting_Manager =(select id from interns where name like 's%');
+
+28)WAQTD NAME AND SALARY OF ALL THE EMPLOYEES IF THEIR ANNUAL SALARY ENDS WITH ‘0’.
+
+select name,salary,salary*12 as "Annual Salary" from interns where salary*12 like '%0';
+
+29)WAQTD NAME OF THE EMPLOYEE HAVING ATLEAST 2L’s IN HIS NAME.
+
+select name from interns where name like '%l%l%';
+
+30)WAQTD NAME OF THE EMPLOYEES WHOS NAME STARTS WITH A ‘VOWEL’
+
+select name from interns where name like 'a%' or name like 'e%' or name like 'i%' or name like 'o%' or name like 'u%';
++---------+
+| name    |
++---------+
+| Avinash |
++---------+

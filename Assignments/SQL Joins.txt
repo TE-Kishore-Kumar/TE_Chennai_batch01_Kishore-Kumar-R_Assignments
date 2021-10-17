@@ -1,0 +1,292 @@
+1. LIST ENAME, JOB, ANNUAL SAL, DEPTNO, DNAME WHO EARN 30000 PER YEAR AND WHO ARE NOT CLERKS 
+
+select name,role,salary*12 as "Annual Salary",interns.deptId,dname from interns inner join department on interns.deptId = department.deptId where salary*12 > 30000 and role != 'Clerk';
++-----------------+-----------+---------------+--------+------------+
+| name            | role      | Annual Salary | deptId | dname      |
++-----------------+-----------+---------------+--------+------------+
+| Muthu           | Developer |        300006 |    100 | Developers |
+| Ram             | Architect |        924006 |    200 | Testers    |
+| Avinash         | Developer |        444006 |    100 | Developers |
+| Naveen S        | Developer |        444006 |    200 | Testers    |
+| Lokesh          | Testing   |        276006 |    100 | Developers |
+| Kishore Kumar R | Developer |        300006 |    200 | Testers    |
+| Nandha          | Testing   |        300006 |    300 | Hr         |
+| Tamizh          | DBA       |        360006 |    300 | Hr         |
+| Bala            | Testing   |        480006 |    400 | Sales      |
+| Rasheed         | Architect |        360006 |    400 | Sales      |
+| Raghu           | Analyst   |        360006 |    200 | Testers    |
++-----------------+-----------+---------------+--------+------------+
+
+2. LIST OUT THE ALL EMPLOYEES BY NAME AND EMPLOYEE NUMBER ALONG WITH THEIR MANAGER'S NAME AND EMPLOYEE NUMBER 
+
+select e1.name,e1.id,e2.name,e2.id from interns e1 join interns e2 on e1.Reporting_Manager = e2.id;
++-----------------+-----+-----------------+-----+
+| name            | id  | name            | id  |
++-----------------+-----+-----------------+-----+
+| Muthu           |  10 | Rasheed         | 100 |
+| Ram             |  20 | Tamizh          |  80 |
+| Avinash         |  30 | Ram             |  20 |
+| Naveen S        |  40 | Muthu           |  10 |
+| Lokesh          |  50 | Kishore Kumar R |  60 |
+| Kishore Kumar R |  60 | Bala            |  90 |
+| Nandha          |  70 | Avinash         |  30 |
+| Bala            |  90 | Naveen S        |  40 |
+| Rasheed         | 100 | Tamizh          |  80 |
+| Kumar           | 101 | Nandha          |  70 |
+| Prem            | 102 | Nandha          |  70 |
+| Roshan          | 103 | Nandha          |  70 |
+| Raghu           | 104 | Tamizh          |  80 |
++-----------------+-----+-----------------+-----+
+
+3. DISPLAY ENAME,DNAME EVEN IF THERE NO EMPLOYEES WORKING IN A PARTICULAR DEPARTMENT.
+
+select name,dname from interns right join department on interns.deptId = department.deptId;
++-----------------+------------+
+| name            | dname      |
++-----------------+------------+
+| Muthu           | Developers |
+| Ram             | Testers    |
+| Avinash         | Developers |
+| Naveen S        | Testers    |
+| Lokesh          | Developers |
+| Kishore Kumar R | Testers    |
+| Nandha          | Hr         |
+| Tamizh          | Hr         |
+| Bala            | Sales      |
+| Rasheed         | Sales      |
+| Roshan          | Sales      |
+| Raghu           | Testers    |
+| NULL            | Client     |
++-----------------+------------+
+ 
+4. DISPLAY THE DEPARTMENT NAME ALONG WITH TOTAL SALARY IN EACH DEPARTMENT 
+
+select dname,sum(salary) from interns inner join department group by dname;
++------------+-------------+
+| dname      | sum(salary) |
++------------+-------------+
+| Client     |      454007 |
+| Developers |      454007 |
+| Hr         |      454007 |
+| Sales      |      454007 |
+| Testers    |      454007 |
++------------+-------------+
+
+5. DISPLAY EMPLOYEE NAME AND DEPARTMENT NAME FOR EACH EMPLOYEE
+
+select name,dname from interns inner join department on interns.deptId = department.deptId;
++-----------------+------------+
+| name            | dname      |
++-----------------+------------+
+| Muthu           | Developers |
+| Ram             | Testers    |
+| Avinash         | Developers |
+| Naveen S        | Testers    |
+| Lokesh          | Developers |
+| Kishore Kumar R | Testers    |
+| Nandha          | Hr         |
+| Tamizh          | Hr         |
+| Bala            | Sales      |
+| Rasheed         | Sales      |
+| Roshan          | Sales      |
+| Raghu           | Testers    |
++-----------------+------------+
+
+6. DISPLAY LOCATION NAME OF THE EMPLOYEE WHO EARN COMMISSION. 
+
+select location,name from interns inner join department on interns.deptId = department.deptId where commission is not null;
++-----------+-----------------+
+| location  | name            |
++-----------+-----------------+
+| Chennai   | Muthu           |
+| Chennai   | Avinash         |
+| Bangalore | Naveen S        |
+| Chennai   | Lokesh          |
+| Bangalore | Kishore Kumar R |
+| Hyderabad | Nandha          |
+| Pune      | Bala            |
+| Bangalore | Raghu           |
++-----------+-----------------+
+
+7. DISPLAY DEPT NAME OF THE EMPLOYEE WHO EARN MIN SALARY AND HAVE NO REPORTING MANAGER.
+
+ select dname,name,min(salary) from interns inner join department on interns.deptId = department.deptId where Reporting_Manager is null;
++-------+--------+-------------+
+| dname | name   | min(salary) |
++-------+--------+-------------+
+| Hr    | Tamizh |     30000.5 |
++-------+--------+-------------+ 
+
+8. DISPLAY DEPT NAME,LOC OF ALL THE EMPLOYEES WHO ARE REPORTING TO SMITH. 
+
+select d.dname,d.location from interns e inner join department d where e.deptId = d.deptId and Reporting_Manager = (select id from interns where name = 'Smith');
+
+9. LIST ALL THE DEPT NAME AND LOCATION OF ALL THE SALESMAN MANAGER'S MANAGER. 
+
+select dname,location from department inner join interns where department.deptId = interns.deptId and role in ('Sales','Manager') and id in (select Reporting_Manager from interns where role = 'Manager');
+
+10. LIST EMPLOYEES WHO ARE WORKING IN RESEARCH DEPT AND THEY ARE MANAGER. 
+
+select name from interns,department where Reporting_Manager in (select Reporting_Manager from interns,department where dname = 'research' group by Reporting_Manager ) and role = 'Manager' and dname = 'research';
+
+11. DISPLAY THE NUMBER OF EMPLOYEES WHO ARE GETTING SALARY LESS THAN THE BLAKE'S MANAGER.
+
+select count(*) from interns where salary <(select salary from interns where id = (select Reporting_Manager from interns where name = 'Blake'));
++----------+
+| count(*) |
++----------+
+|        0 |
++----------+
+ 
+12. LIST THE EMPLOYEE DEPTNAME AND LOCATION OF ALL THE EMPLOYEES WHO ARE ANALYST,REPORTING TO BLAKE. 
+
+select e1.name,d.dname,d.location from interns e1 join department d where e1.deptId = d.deptId and role = 'Analyst' and Reporting_Manager = (select id from interns where name = 'Blake');
+
+13. DISPLAY THE EMPLOYEE NAMES,HIREDATE,COMM OF FORD'S MANAGER 
+
+select name,Date_of_Join,commission from interns where id = (select Reporting_Manager from interns where name = 'Ford');
+
+14. DISPLAY ENAME, DNAME OF ALL THE EMPLOYEES WHOSE SALARY LESS THAN AVG SAL OF DEPT 30 
+
+select name,dname from interns inner join department on interns.deptId = department.deptId and salary < (select avg(salary) from interns where deptId = 30);
++--------+------------+
+| name   | dname      |
++--------+------------+
+| Lokesh | Developers |
++--------+------------+
+
+15. DISPLAY ENAME DNAME AND LOC OF ALL THE EMPLOYEES WHO ARE WORKING FOR JONES 
+
+select name,dname,location from interns inner join department where interns.deptId = department.deptId and Reporting_Manager = (select id from interns where name = 'JONES');
+
+16. DISPLAY ENAME DNAME OF ALL THE EMPLOYEES WHOSE NAME STARTS WITH S 
+
+select name,dname from interns inner join department on interns.deptId = department.deptId where name like 's%';
+
+17. LIST THE DNAME WHO ARE NOT HAVING ANY EMPLOYEE IN IT 
+
+select dname from department where deptId not in (select deptId from interns);
++--------+
+| dname  |
++--------+
+| Client |
++--------+
+
+18. DISPLAY EMPLOYEE WHO ARE GETTING SAME COMMISSION 
+
+select distinct e1.commission,e2.name from interns e1 join interns e2 where e1.commission = e2.commission and e1.name != e2.name;
++------------+-----------------+
+| commission | name            |
++------------+-----------------+
+|        600 | Muthu           |
+|        600 | Avinash         |
+|        600 | Naveen S        |
+|        500 | Lokesh          |
+|        600 | Kishore Kumar R |
+|        500 | Nandha          |
+|        500 | Bala            |
+|        200 | Kumar           |
+|        200 | Prem            |
++------------+-----------------+
+
+19. DISPLAY ALL THE DEPT NAMES IRRESPECTIVE OF ANY EMPLOYEE WORKING IN IT OR NOT. IF AN EMPLOYEE IS WORKING DISPLAY HIS NAME.
+
+select dname from department;
++------------+
+| dname      |
++------------+
+| Developers |
+| Testers    |
+| Hr         |
+| Sales      |
+| Client     |
++------------+
+ 
+20. WRITE A QUERY TO DISPLAY EMPLOYEE NAME, JOB, DNAME, LOCATION OF ALL EMPLOYEES WHO ARE WORKING AS ACTUAL MANAGERS AND WORKS AT CHICAGO. 
+
+select name,role,dname,location from interns inner join department where role = 'manager' and location = 'Chicago' group by location;
+
+21. LIST THE DEPARTMENT NAMES IN WHICH THE EMPLOYEES ARE HIRED BETWEEN 1ST OF JAN 1981 AND 31ST DEC 1982 WITH SALARY MORE THAN 1800. 
+
+select dname from interns inner  join department on interns.deptId = department.deptId where Date_of_Join between '1981-01-01' and '1982-12-31' and salary > 1800;
+
+22. DISPLAY 2ND LEAST SALARY FROM EMPLOYEE TABLE.
+
+select salary from interns where salary = (select min(salary) from interns where salary > (select min(salary) from interns));
++---------+
+| salary  |
++---------+
+| 25000.5 |
+| 25000.5 |
+| 25000.5 |
+| 25000.5 |
+| 25000.5 |
+| 25000.5 |
++---------+ 
+23. LIST THE EMPLOYEES WHOSE ANNUAL SALARY IS GREATER THAN 1500 AND WHO ARE JOINED BEFORE 1982 ONLY.
+
+select name from interns where salary*12 > 1500 and Date_of_Join < '1982-01-01';
++---------+
+| name    |
++---------+
+| Muthu   |
+| Avinash |
+| Lokesh  |
+| Nandha  |
+| Tamizh  |
+| Bala    |
+| Kumar   |
+| Prem    |
+| Roshan  |
++---------+ 
+24. DISPLAY DNAME, LOC, DEPTNO OF EMPLOYEES WHO HAS SAME REPORTING MANAGER
+
+select dname,location,deptId from department where deptId in (select deptId from interns where id in(select Reporting_Manager from interns group by Reporting_Manager having count(*) > 1));
++-------+-----------+--------+
+| dname | location  | deptId |
++-------+-----------+--------+
+| Hr    | Hyderabad |    300 |
++-------+-----------+--------+
+ 
+25. DISPLAY EMPLOYEE NAME ALONG WITH THEIR MANAGER NAME. 
+
+select e1.name, e2.name from interns e1 join  interns e2 on e1.Reporting_Manager = e2.id;
++-----------------+-----------------+
+| name            | name            |
++-----------------+-----------------+
+| Muthu           | Rasheed         |
+| Ram             | Tamizh          |
+| Avinash         | Ram             |
+| Naveen S        | Muthu           |
+| Lokesh          | Kishore Kumar R |
+| Kishore Kumar R | Bala            |
+| Nandha          | Avinash         |
+| Bala            | Naveen S        |
+| Rasheed         | Tamizh          |
+| Kumar           | Nandha          |
+| Prem            | Nandha          |
+| Roshan          | Nandha          |
+| Raghu           | Tamizh          |
++-----------------+-----------------+
+26. DISPLAY EMPLOYEE NAME AND HIS DEPT NAME FOR THE EMPLOYEES WHOSE NAME STARTS WITH ‘S’. 
+
+select name,dname from interns inner join department where name like 's%';
+
+27. DISPLAY EMPLOYEES WHO ARE GETTING SAME SALARY.
+
+select distinct e1.salary,e2.name from interns e1 join interns e2 where e1.salary = e2.salary and e1.name != e2.name;
++---------+-----------------+
+| salary  | name            |
++---------+-----------------+
+| 25000.5 | Muthu           |
+| 37000.5 | Avinash         |
+| 37000.5 | Naveen S        |
+| 25000.5 | Kishore Kumar R |
+| 25000.5 | Nandha          |
+| 30000.5 | Tamizh          |
+| 30000.5 | Rasheed         |
+| 25000.5 | Kumar           |
+| 25000.5 | Prem            |
+| 25000.5 | Roshan          |
+| 30000.5 | Raghu           |
++---------+-----------------+
